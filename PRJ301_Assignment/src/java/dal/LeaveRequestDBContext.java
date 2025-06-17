@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -91,17 +92,16 @@ public class LeaveRequestDBContext {
         }
         return null;
     }
-
-    public void processRequest(int requestID, int processedBy, String action, String processReason) throws SQLException {
-        String sql = "UPDATE LeaveRequests SET Status = ?, ProcessedBy = ?, ProcessReason = ? WHERE RequestID = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, action);
-            stmt.setInt(2, processedBy);
-            stmt.setString(3, processReason);
-            stmt.setInt(4, requestID);
-            stmt.executeUpdate();
-        }
+public void processRequest(int requestID, int processedBy, String action, String processReason) throws SQLException {
+    String sql = "UPDATE LeaveRequests SET Status = ?, ProcessedBy = ?, ProcessReason = ? WHERE RequestID = ?";
+    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        stmt.setString(1, action);
+        stmt.setInt(2, processedBy);
+        stmt.setString(3, processReason);
+        stmt.setInt(4, requestID);
+        stmt.executeUpdate();
     }
+}
 
     public Map<Integer, List<Boolean>> getAgenda(int departmentID, Date fromDate, Date toDate) throws SQLException {
         Map<Integer, List<Boolean>> agenda = new HashMap<>();
