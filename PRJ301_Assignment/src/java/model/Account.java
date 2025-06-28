@@ -4,22 +4,62 @@
  */
 package model;
 
-public class User {
-    private int userID;
-    private String username;
-    private String fullName;
-    private int departmentID;
-    private Integer managerID;
+import java.util.ArrayList;
+import model.accesscontrol.Role;
 
-    // Getters and setters
-    public int getUserID() { return userID; }
-    public void setUserID(int userID) { this.userID = userID; }
-    public String getUsername() { return username; }
-    public void setUsername(String username) { this.username = username; }
-    public String getFullName() { return fullName; }
-    public void setFullName(String fullName) { this.fullName = fullName; }
-    public int getDepartmentID() { return departmentID; }
-    public void setDepartmentID(int departmentID) { this.departmentID = departmentID; }
-    public Integer getManagerID() { return managerID; }
-    public void setManagerID(Integer managerID) { this.managerID = managerID; }
+/**
+ *
+ * @author p14s
+ */
+public class Account extends IModel {
+    private String username;
+    private String password;
+    private String displayname;
+    
+    private Employee employee;
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
+    
+    
+    private ArrayList<Role> roles = new ArrayList<>();
+
+    public ArrayList<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(ArrayList<Role> roles) {
+        this.roles = roles;
+    }
+    
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getDisplayname() {
+        return displayname;
+    }
+
+    public void setDisplayname(String displayname) {
+        this.displayname = displayname;
+    }
+    
 }
