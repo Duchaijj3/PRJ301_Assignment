@@ -1,8 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
-	 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	 xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
-	 version="6.0">
-
+<web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
+    <servlet>
+        <servlet-name>LoginController</servlet-name>
+        <servlet-class>controller.authentication.LoginController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ListController</servlet-name>
+        <servlet-class>controller.rfl.ListController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CreateRFLController</servlet-name>
+        <servlet-class>controller.rfl.CreateController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>HomeController</servlet-name>
+        <servlet-class>controller.home.HomeController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>InsertDummyController</servlet-name>
+        <servlet-class>controller.dummy.InsertController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateDummyController</servlet-name>
+        <servlet-class>controller.dummy.UpdateController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteDummyController</servlet-name>
+        <servlet-class>controller.dummy.DeleteController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LoginController</servlet-name>
+        <url-pattern>/login</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ListController</servlet-name>
+        <url-pattern>/rfl/list</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateRFLController</servlet-name>
+        <url-pattern>/rfl/create</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>HomeController</servlet-name>
+        <url-pattern>/home</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>InsertDummyController</servlet-name>
+        <url-pattern>/dummy/insert</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateDummyController</servlet-name>
+        <url-pattern>/dummy/update</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteDummyController</servlet-name>
+        <url-pattern>/dummy/delete</url-pattern>
+    </servlet-mapping>
+       <session-config>
+        <session-timeout>30</session-timeout>
+    </session-config>
 </web-app>
