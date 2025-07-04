@@ -65,11 +65,13 @@ public class CreateController extends BaseRBACController {
         RequestForLeaveDBContext db = new RequestForLeaveDBContext();
         db.insert(rfl);
         System.out.println("Inserted!");
-        resp.sendRedirect(req.getContextPath() + "/home"); // Chuyển hướng sau khi thành công
+        System.out.println("From: " + from + ", To: " + to + ", Title: " + title + ", Reason: " + reason);
+        resp.sendRedirect(req.getContextPath() + "/home"); // Chuyển hướng ve home sau khi thành công
     }
 
     @Override
     protected void processGet(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
         req.getRequestDispatcher("../view/rfl/create.jsp").forward(req, resp);
     }
+    
 }
