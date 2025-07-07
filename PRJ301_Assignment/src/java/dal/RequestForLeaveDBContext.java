@@ -112,6 +112,18 @@ public class RequestForLeaveDBContext extends DBContext<RequestForLeave> {
             Logger.getLogger(RequestForLeaveDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    public void updateStatus(int id, int status, int processedBy) {
+    try {
+        String sql = "UPDATE RequestForLeave SET status = ?, processedby = ? WHERE rid = ?";
+        PreparedStatement stm = connection.prepareStatement(sql);
+        stm.setInt(1, status);
+        stm.setInt(2, processedBy);
+        stm.setInt(3, id);
+        stm.executeUpdate();
+    } catch (SQLException ex) {
+        Logger.getLogger(RequestForLeaveDBContext.class.getName()).log(Level.SEVERE, null, ex);
+    }
+}
 
     @Override
     public void update(RequestForLeave model) {

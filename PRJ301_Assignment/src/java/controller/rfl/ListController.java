@@ -42,3 +42,18 @@ public class ListController extends BaseRBACController {
    
     
 }
+//public class ListController extends BaseRBACController {
+//
+//    @Override
+//    protected void processPost(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
+//        // Xử lý POST nếu cần (ví dụ: lọc đơn)
+//    }
+//
+//    @Override
+//    protected void processGet(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
+//        RequestForLeaveDBContext db = new RequestForLeaveDBContext();
+//        int aid = account.getId();
+//        req.setAttribute("rfls", db.list(aid));
+//        req.getRequestDispatcher("view/rfl/list.jsp").forward(req, resp);
+//    }
+//}
