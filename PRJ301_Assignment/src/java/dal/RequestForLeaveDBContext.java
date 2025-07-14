@@ -127,6 +127,61 @@ while (rs.next()) {
         }
         return rfls;
     }
+public ArrayList<RequestForLeave> listByDepartmentOfAccount(int accountId) {
+    ArrayList<RequestForLeave> rfls = new ArrayList<>();
+    try {
+        // Lấy did trước
+        Integer departmentId = getDepartmentIdByAccountId(accountId);
+        if (departmentId == null) return rfls;
+
+        String sql = "SELECT rfl.*, a.username as createdbyname " +
+                     "FROM RequestForLeave rfl " +
+                     "JOIN Account a ON rfl.createdby = a.aid " +
+                     "JOIN Account_Employee ae ON a.aid = ae.aid " +
+                     "JOIN Employee e ON ae.eid = e.eid " +
+                     "WHERE e.did = ?";
+        PreparedStatement stm = connection.prepareStatement(sql);
+        stm.setInt(1, departmentId);
+        ResultSet rs = stm.executeQuery();
+        while (rs.next()) {
+            RequestForLeave rfl = new RequestForLeave();
+            rfl.setId(rs.getInt("rid"));
+            rfl.setTitle(rs.getString("title"));
+            rfl.setReason(rs.getString("reason"));
+            rfl.setFrom(rs.getDate("from"));
+            rfl.setTo(rs.getDate("to"));
+            rfl.setStatus(rs.getInt("status"));
+            rfl.setProcessreason(rs.getString("processreason"));
+
+            Account createdby = new Account();
+            createdby.setId(rs.getInt("createdby"));
+            createdby.setUsername(rs.getString("createdbyname"));
+            rfl.setCreatedby(createdby);
+
+            rfls.add(rfl);
+        }
+    } catch (SQLException ex) {
+        ex.printStackTrace();
+    }
+    return rfls;
+}
+    public Integer getDepartmentIdByAccountId(int accountId) {
+    Integer departmentId = null;
+    try {
+        String sql = "SELECT e.did FROM Employee e " +
+                     "JOIN Account_Employee ae ON e.eid = ae.eid " +
+                     "WHERE ae.aid = ?";
+        PreparedStatement stm = connection.prepareStatement(sql);
+        stm.setInt(1, accountId);
+        ResultSet rs = stm.executeQuery();
+        if (rs.next()) {
+            departmentId = rs.getInt("did");
+        }
+    } catch (SQLException ex) {
+        ex.printStackTrace();
+    }
+    return departmentId;
+}
 
     @Override
     public ArrayList<RequestForLeave> list() {
