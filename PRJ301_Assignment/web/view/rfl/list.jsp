@@ -23,6 +23,8 @@
                 <td>Status</td>
                 <td>Created By</td>
                 <td>Process By</td>
+                <td>Process Reason</td>
+                <td> Decision </td> 
                 <td></td>
             </tr>
             <c:forEach items="${requestScope.rfls}" var="r">
@@ -36,7 +38,11 @@
                     <td>${r.createdby.username}</td>
                     <td><c:if test="${r.processedby ne null}">
                             ${r.processedby.username}
-                    </c:if></td>
+                        </c:if></td>
+                    <td>${r.processreason}</td>
+                    <td>
+<a href="${pageContext.request.contextPath}/manage?id=${r.id}">Decision</a>
+                    </td>
                     <td>
                         <a href="process?id=${r.id}&decision=yes">Yes</a>
                         <a href="process?id=${r.id}&decision=yes">No</a>

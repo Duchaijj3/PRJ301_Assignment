@@ -25,16 +25,16 @@
         <servlet-class>controller.dummy.DeleteController</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>ManageController</servlet-name>
-        <servlet-class>controller.rfl.ManageController</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>DetailsController</servlet-name>
         <servlet-class>controller.rfl.DetailsController</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>HomeController</servlet-name>
         <servlet-class>controller.home.HomeController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ManageController</servlet-name>
+        <servlet-class>controller.rfl.ManageController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginController</servlet-name>
@@ -61,16 +61,16 @@
         <url-pattern>/dummy/delete</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>ManageController</servlet-name>
-        <url-pattern>/manage</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>DetailsController</servlet-name>
         <url-pattern>/details</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>HomeController</servlet-name>
         <url-pattern>/home</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ManageController</servlet-name>
+        <url-pattern>/manage</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

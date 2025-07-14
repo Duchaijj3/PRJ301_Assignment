@@ -18,6 +18,7 @@ public class RequestForLeave extends IModel {
     private int status;
     private Account createdby;
     private Account processedby;
+      private String processreason;
 
     public String getTitle() {
         return title;
@@ -73,6 +74,13 @@ public class RequestForLeave extends IModel {
 
     public void setProcessedby(Account processedby) {
         this.processedby = processedby;
+    }
+       public String getProcessreason() {
+        return processreason;
+    }
+
+    public void setProcessreason(String processreason) {
+        this.processreason = processreason;
     }
     
 }

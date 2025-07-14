@@ -25,7 +25,7 @@ public class HomeController extends BaseRequiredAuthenticationController {
         RequestForLeaveDBContext db = new RequestForLeaveDBContext();
         ArrayList<RequestForLeave> rfls = db.list(account.getId());
         req.setAttribute("rfls", rfls);
-        req.getRequestDispatcher("../view/home/home.jsp").forward(req, resp);
+        req.getRequestDispatcher("/view/home/home.jsp").forward(req, resp);
     }
 
     @Override

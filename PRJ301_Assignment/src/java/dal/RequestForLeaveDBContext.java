@@ -24,6 +24,45 @@ import model.Account;
  * @author p14s
  */
 public class RequestForLeaveDBContext extends DBContext<RequestForLeave> {
+    public RequestForLeave get(int id) {
+    RequestForLeave rfl = null;
+    try {
+        String sql = "SELECT rfl.*, a.username as createdbyname, ap.username as processbyname "
+                   + "FROM RequestForLeave rfl "
+                   + "JOIN Account a ON rfl.createdby = a.aid "
+                   + "LEFT JOIN Account ap ON rfl.processedby = ap.aid "
+                   + "WHERE rfl.rid = ?";
+        PreparedStatement stm = connection.prepareStatement(sql);
+        stm.setInt(1, id);
+        ResultSet rs = stm.executeQuery();
+        if (rs.next()) {
+            rfl = new RequestForLeave();
+            rfl.setId(rs.getInt("rid"));
+            rfl.setTitle(rs.getString("title"));
+            rfl.setReason(rs.getString("reason"));
+            rfl.setFrom(rs.getDate("from"));
+            rfl.setTo(rs.getDate("to"));
+            rfl.setStatus(rs.getInt("status"));
+            rfl.setProcessreason(rs.getString("processreason"));
+
+            Account createdby = new Account();
+            createdby.setId(rs.getInt("createdby"));
+            createdby.setUsername(rs.getString("createdbyname"));
+            rfl.setCreatedby(createdby);
+
+            int processedById = rs.getInt("processedby");
+            if (processedById > 0) {
+                Account processedby = new Account();
+                processedby.setId(processedById);
+                processedby.setUsername(rs.getString("processbyname"));
+                rfl.setProcessedby(processedby);
+            }
+        }
+    } catch (SQLException ex) {
+        ex.printStackTrace();
+    }
+    return rfl;
+}
 
     public ArrayList<RequestForLeave> list(int aid) {
         ArrayList<RequestForLeave> rfls = new ArrayList<>();
@@ -39,7 +78,7 @@ public class RequestForLeaveDBContext extends DBContext<RequestForLeave> {
                     + "    FROM Employee e\n"
                     + "    INNER JOIN RecursiveCTE r ON e.bossid = r.eid\n"
                     + ")\n"
-                    + "SELECT rfl.rid, rfl.title, rfl.reason, rfl.[from], rfl.[to], e.eid, e.ename, "
+                    + "SELECT rfl.rid, rfl.title, rfl.reason, rfl.[from], rfl.[to], rfl.processreason, e.eid, e.ename, "
                     + "a.username AS [createdbyname], rfl.createdby, rfl.[status], "
                     + "ap.username AS [processbyname], rfl.processedby\n"
                     + "FROM RecursiveCTE e INNER JOIN Account_Employee ae ON e.eid = ae.eid\n"
@@ -51,27 +90,29 @@ public class RequestForLeaveDBContext extends DBContext<RequestForLeave> {
             stm.setInt(1, aid);
             stm.setInt(2, aid);
             ResultSet rs = stm.executeQuery();
-            while (rs.next()) {
-                RequestForLeave rfl = new RequestForLeave();
-                rfl.setId(rs.getInt("rid"));
-                rfl.setTitle(rs.getString("title"));
-                rfl.setReason(rs.getString("reason"));
-                rfl.setFrom(rs.getDate("from"));
-                rfl.setTo(rs.getDate("to"));
-                rfl.setStatus(rs.getInt("status"));
-                Account createdby = new Account();
-                createdby.setUsername(rs.getString("createdbyname"));
-                createdby.setId(rs.getInt("createdby"));
-                rfl.setCreatedby(createdby);
+while (rs.next()) {
+    RequestForLeave rfl = new RequestForLeave();
+    rfl.setId(rs.getInt("rid"));
+    rfl.setTitle(rs.getString("title"));
+    rfl.setReason(rs.getString("reason"));
+    rfl.setFrom(rs.getDate("from"));
+    rfl.setTo(rs.getDate("to"));
+    rfl.setStatus(rs.getInt("status"));
+    rfl.setProcessreason(rs.getString("processreason")); // <--- Thêm dòng này
 
-                int processedById = rs.getInt("processedby");
-                if (processedById > 0) {
-                    Account processedby = new Account();
-                    processedby.setUsername(rs.getString("processbyname"));
-                    processedby.setId(processedById);
-                    rfl.setProcessedby(processedby);
-                }
-                rfls.add(rfl);
+    Account createdby = new Account();
+    createdby.setUsername(rs.getString("createdbyname"));
+    createdby.setId(rs.getInt("createdby"));
+    rfl.setCreatedby(createdby);
+
+    int processedById = rs.getInt("processedby");
+    if (processedById > 0) {
+        Account processedby = new Account();
+        processedby.setUsername(rs.getString("processbyname"));
+        processedby.setId(processedById);
+        rfl.setProcessedby(processedby);
+    }
+    rfls.add(rfl);
             }
         } catch (SQLException ex) {
             Logger.getLogger(RequestForLeaveDBContext.class.getName()).log(Level.SEVERE, null, ex);
@@ -92,10 +133,7 @@ public class RequestForLeaveDBContext extends DBContext<RequestForLeave> {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    @Override
-    public RequestForLeave get(int id) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+
 
     @Override
     public void insert(RequestForLeave model) {
@@ -112,13 +150,14 @@ public class RequestForLeaveDBContext extends DBContext<RequestForLeave> {
             Logger.getLogger(RequestForLeaveDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    public void updateStatus(int id, int status, int processedBy) {
+public void updateStatus(int id, int status, int processedBy, String processreason) {
     try {
-        String sql = "UPDATE RequestForLeave SET status = ?, processedby = ? WHERE rid = ?";
+        String sql = "UPDATE RequestForLeave SET status = ?, processedby = ?, processreason = ? WHERE rid = ?";
         PreparedStatement stm = connection.prepareStatement(sql);
         stm.setInt(1, status);
         stm.setInt(2, processedBy);
-        stm.setInt(3, id);
+        stm.setString(3, processreason);
+        stm.setInt(4, id);
         stm.executeUpdate();
     } catch (SQLException ex) {
         Logger.getLogger(RequestForLeaveDBContext.class.getName()).log(Level.SEVERE, null, ex);
