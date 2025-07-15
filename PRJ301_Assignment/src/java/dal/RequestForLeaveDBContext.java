@@ -63,7 +63,79 @@ public class RequestForLeaveDBContext extends DBContext<RequestForLeave> {
     }
     return rfl;
 }
+    
+// Lấy tất cả đơn nghỉ đã duyệt trong khoảng ngày (cho admin)
+public ArrayList<RequestForLeave> listApprovedInRange(Date from, Date to) {
+    ArrayList<RequestForLeave> rfls = new ArrayList<>();
+    try {
+        String sql = "SELECT rfl.*, a.username as createdbyname " +
+                     "FROM RequestForLeave rfl " +
+                     "JOIN Account a ON rfl.createdby = a.aid " +
+                     "WHERE rfl.status = 1 AND (rfl.[from] <= ? AND rfl.[to] >= ?)";
+        PreparedStatement stm = connection.prepareStatement(sql);
+        stm.setDate(1, to);   // lấy tất cả đơn có giao cắt với khoảng [from, to]
+        stm.setDate(2, from);
+        ResultSet rs = stm.executeQuery();
+        while (rs.next()) {
+            RequestForLeave rfl = new RequestForLeave();
+            rfl.setId(rs.getInt("rid"));
+            rfl.setTitle(rs.getString("title"));
+            rfl.setReason(rs.getString("reason"));
+            rfl.setFrom(rs.getDate("from"));
+            rfl.setTo(rs.getDate("to"));
+            rfl.setStatus(rs.getInt("status"));
+            rfl.setProcessreason(rs.getString("processreason"));
 
+            Account createdby = new Account();
+            createdby.setId(rs.getInt("createdby"));
+            createdby.setUsername(rs.getString("createdbyname"));
+            rfl.setCreatedby(createdby);
+
+            rfls.add(rfl);
+        }
+    } catch (SQLException ex) {
+        ex.printStackTrace();
+    }
+    return rfls;
+}
+
+// Lấy tất cả đơn nghỉ đã duyệt của phòng ban trong khoảng ngày (cho trưởng phòng)
+public ArrayList<RequestForLeave> listApprovedByDepartmentAndRange(int departmentId, Date from, Date to) {
+    ArrayList<RequestForLeave> rfls = new ArrayList<>();
+    try {
+        String sql = "SELECT rfl.*, a.username as createdbyname " +
+                     "FROM RequestForLeave rfl " +
+                     "JOIN Account a ON rfl.createdby = a.aid " +
+                     "JOIN Account_Employee ae ON a.aid = ae.aid " +
+                     "JOIN Employee e ON ae.eid = e.eid " +
+                     "WHERE rfl.status = 1 AND e.did = ? AND (rfl.[from] <= ? AND rfl.[to] >= ?)";
+        PreparedStatement stm = connection.prepareStatement(sql);
+        stm.setInt(1, departmentId);
+        stm.setDate(2, to);
+        stm.setDate(3, from);
+        ResultSet rs = stm.executeQuery();
+        while (rs.next()) {
+            RequestForLeave rfl = new RequestForLeave();
+            rfl.setId(rs.getInt("rid"));
+            rfl.setTitle(rs.getString("title"));
+            rfl.setReason(rs.getString("reason"));
+            rfl.setFrom(rs.getDate("from"));
+            rfl.setTo(rs.getDate("to"));
+            rfl.setStatus(rs.getInt("status"));
+            rfl.setProcessreason(rs.getString("processreason"));
+
+            Account createdby = new Account();
+            createdby.setId(rs.getInt("createdby"));
+            createdby.setUsername(rs.getString("createdbyname"));
+            rfl.setCreatedby(createdby);
+
+            rfls.add(rfl);
+        }
+    } catch (SQLException ex) {
+        ex.printStackTrace();
+    }
+    return rfls;
+}
     public ArrayList<RequestForLeave> list(int aid) {
         ArrayList<RequestForLeave> rfls = new ArrayList<>();
 

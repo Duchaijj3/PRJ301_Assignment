@@ -20,7 +20,7 @@ protected void processGet(HttpServletRequest req, HttpServletResponse resp, Acco
     RequestForLeaveDBContext db = new RequestForLeaveDBContext();
     ArrayList<RequestForLeave> rfls = db.listByDepartmentOfAccount(account.getId());
     req.setAttribute("rfls", rfls);
-    req.getRequestDispatcher("/view/agenda/list.jsp").forward(req, resp);
+    req.getRequestDispatcher("../view/agenda/list.jsp").forward(req, resp);
 }
     @Override
     protected void processPost(HttpServletRequest req, HttpServletResponse resp, Account account) throws ServletException, IOException {
