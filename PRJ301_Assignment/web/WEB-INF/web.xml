@@ -33,10 +33,6 @@
         <servlet-class>controller.home.HomeController</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>ManageController</servlet-name>
-        <servlet-class>controller.rfl.ManageController</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>AgendaController</servlet-name>
         <jsp-file>/view/agenda/list.jsp</jsp-file>
     </servlet>
@@ -71,10 +67,6 @@
     <servlet-mapping>
         <servlet-name>HomeController</servlet-name>
         <url-pattern>/home</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ManageController</servlet-name>
-        <url-pattern>/manage</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AgendaController</servlet-name>
